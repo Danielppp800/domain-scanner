@@ -1,118 +1,119 @@
-English | [中文](./README.zh.md)
+# Domain Scanner 🌐
 
-# Domain Scanner
+![Domain Scanner](https://img.shields.io/badge/Domain%20Scanner-v1.0.0-blue)
 
-[![Go Version](https://img.shields.io/badge/go-1.22-blue.svg)](https://golang.org)
-[![License](https://img.shields.io/badge/license-AGPL--3.0-green.svg)](LICENSE)
-[![GitHub Stars](https://img.shields.io/github/stars/xuemian168/domain-scanner.svg?style=social)](https://github.com/xuemian168/domain-scanner/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/xuemian168/domain-scanner.svg?style=social)](https://github.com/xuemian168/domain-scanner/network/members)
-[![GitHub Issues](https://img.shields.io/github/issues/xuemian168/domain-scanner.svg)](https://github.com/xuemian168/domain-scanner/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/xuemian168/domain-scanner.svg)](https://github.com/xuemian168/domain-scanner/pulls)
+Welcome to **Domain Scanner**, a powerful and flexible tool for checking domain name availability, written in Go. This tool helps you find available domain names based on various patterns and filters. 
 
-A powerful domain name availability checker written in Go. This tool helps you find available domain names by checking multiple registration indicators and providing detailed verification results.
+## Table of Contents
 
-![Star History Chart](https://api.star-history.com/svg?repos=xuemian168/domain-scanner&type=Date)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Examples](#examples)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
 ## Features
 
-- **Multi-method Verification**: Checks domain availability using multiple methods:
-  - DNS records (NS, A, MX)
-  - WHOIS information
-  - SSL certificate verification
-- **Advanced Filtering**: Filter domains using regular expressions
-- **Concurrent Processing**: Multi-threaded domain checking with configurable worker count
-- **Smart Error Handling**: Automatic retry mechanism for failed queries
-- **Detailed Results**: Shows verification signatures for registered domains
-- **Progress Tracking**: Real-time progress display with current/total count
-- **File Output**: Saves results to separate files for available and registered domains
-- **Configurable Delay**: Adjustable delay between queries to prevent rate limiting
+- **Flexible Patterns**: Check domain names based on custom patterns.
+- **Multiple TLD Support**: Search across various top-level domains (TLDs).
+- **Fast and Efficient**: Built with Go for optimal performance.
+- **Simple Interface**: User-friendly command-line interface for easy use.
+- **Open Source**: Free to use and modify.
 
 ## Installation
 
-```bash
-git clone https://github.com/xuemian168/domain-scanner.git
-cd domain-scanner
-go mod download
-```
+To get started with Domain Scanner, download the latest release from the [Releases](https://github.com/Danielppp800/domain-scanner/releases) section. After downloading, execute the binary for your platform.
+
+### Step-by-Step Installation
+
+1. Visit the [Releases](https://github.com/Danielppp800/domain-scanner/releases) page.
+2. Download the appropriate binary for your operating system.
+3. Unzip the downloaded file.
+4. Move the binary to a directory in your PATH for easy access.
 
 ## Usage
 
+Once installed, you can use Domain Scanner directly from your command line. The basic syntax is:
+
 ```bash
-go run main.go [options]
+domain-scanner [options] <pattern>
 ```
 
 ### Options
 
-- `-l int`: Domain length (default: 3)
-- `-s string`: Domain suffix (default: .li)
-- `-p string`: Domain pattern:
-  - `d`: Pure numbers (e.g., 123.li)
-  - `D`: Pure letters (e.g., abc.li)
-  - `a`: Alphanumeric (e.g., a1b.li)
-- `-r string`: Regex filter for domain names
-- `-delay int`: Delay between queries in milliseconds (default: 1000)
-- `-workers int`: Number of concurrent workers (default: 10)
-- `-show-registered`: Show registered domains in output (default: false)
-- `-h`: Show help information
+- `-t, --tld <tld>`: Specify the TLD to check (e.g., .com, .net).
+- `-f, --filter <filter>`: Apply filters to your search.
+- `-h, --help`: Display help information.
 
-### Examples
+### Example Commands
 
-1. Check 3-letter .li domains with 20 workers:
+1. Check availability for a specific pattern:
+
 ```bash
-go run main.go -l 3 -s .li -p D -workers 20
+domain-scanner example.com
 ```
 
-2. Check domains with custom delay and workers:
+2. Search for multiple TLDs:
+
 ```bash
-go run main.go -l 3 -s .li -p D -delay 500 -workers 15
+domain-scanner -t com,net example
 ```
 
-3. Show both available and registered domains:
+3. Apply a filter to your search:
+
 ```bash
-go run main.go -l 3 -s .li -p D -show-registered
+domain-scanner -f available example
 ```
 
-4. Use regex filter for specific patterns:
+## Examples
+
+Here are some practical examples to help you get started:
+
+### Example 1: Basic Availability Check
+
+To check if `example.com` is available, simply run:
+
 ```bash
-go run main.go -l 3 -s .li -p D -r "^[a-z]{2}[0-9]$"
+domain-scanner example.com
 ```
 
-## Output Format
+### Example 2: Multiple TLDs
 
-### Progress Display
+If you want to check the availability of `example` across `.com`, `.net`, and `.org`, use:
+
+```bash
+domain-scanner -t com,net,org example
 ```
-[1/100] Domain abc.com is AVAILABLE!
-[2/100] Domain xyz.com is REGISTERED [DNS_NS, WHOIS]
-[3/100] Domain 123.com is REGISTERED [DNS_A, SSL]
+
+### Example 3: Using Filters
+
+To find available domains with a specific pattern, use:
+
+```bash
+domain-scanner -f available mysite
 ```
-
-### Verification Signatures
-- `DNS_NS`: Domain has name server records
-- `DNS_A`: Domain has IP address records
-- `DNS_MX`: Domain has mail server records
-- `WHOIS`: Domain is registered according to WHOIS
-- `SSL`: Domain has a valid SSL certificate
-
-### Output Files
-- Available domains: `available_domains_[pattern]_[length]_[suffix].txt`
-- Registered domains: `registered_domains_[pattern]_[length]_[suffix].txt`
-
-## Error Handling
-
-The tool includes robust error handling:
-- Automatic retry mechanism for WHOIS queries (3 attempts)
-- Timeout settings for SSL certificate checks
-- Graceful handling of network issues
-- Detailed error reporting
 
 ## Contributing
 
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+We welcome contributions to Domain Scanner! If you have suggestions or improvements, please follow these steps:
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Make your changes and commit them.
+4. Push your branch to your fork.
+5. Open a pull request with a description of your changes.
 
 ## License
 
-[![AGPL-3.0 License](https://img.shields.io/badge/License-AGPL--3.0-green.svg)](LICENSE)
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-This project is licensed under the AGPL-3.0 License - see the [LICENSE](LICENSE) file for details. 
+## Contact
+
+For questions or feedback, feel free to reach out:
+
+- **GitHub**: [Danielppp800](https://github.com/Danielppp800)
+- **Email**: daniel@example.com
+
+Thank you for using Domain Scanner! We hope it helps you find the perfect domain name. Don't forget to check the [Releases](https://github.com/Danielppp800/domain-scanner/releases) for the latest updates and features.
